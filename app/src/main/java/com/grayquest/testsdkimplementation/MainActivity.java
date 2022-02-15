@@ -2,45 +2,41 @@ package com.grayquest.testsdkimplementation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+
+import com.grayquest.myapplication.WebAppInterface;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    WebView webview;
-    String value = "This message is from Android";
+
+    Button btn_library;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        webview = (WebView) findViewById(R.id.webview);
+        btn_library = (Button) findViewById(R.id.btn_library);
 
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.clearCache(true);
-        webview.addJavascriptInterface(new WebAppInterface(MainActivity.this), "Android");
-        webview.setWebViewClient(new WebViewClient(){
-            public void onPageFinished(WebView view, String url){
-                Log.e(TAG, "URL: "+url);
-                //Here you want to use .loadUrl again
-                //on the webview object and pass in
-                //"javascript:<your javaScript function"
-//                webview.evaluateJavascript("javascript:alert('Hi');",null); //if passing in an object. Mapping may need to take place
-//                webview.loadUrl("javascript:testShowAlert('" + value + "')");
-//                webview.loadUrl("javascript:testShowAlert();");
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                    view.evaluateJavascript("javascript:testShowAlert()", null);
-                } else {
-                    view.loadUrl("javascript:testShowAlert()");
+        btn_library.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = null;
+                try {
+                    intent = new Intent(MainActivity.this, Class.forName("com.grayquest.myapplication.WebView_Activity"));
+                    startActivity(intent);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
+
             }
         });
-        webview.loadUrl("https://vibrant-spence-d1fbfc.netlify.app");
-//        webview.evaluateJavascript("javascript:alert('Hiii');",null);
-
     }
 }

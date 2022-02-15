@@ -1,4 +1,4 @@
-package com.grayquest.testsdkimplementation;
+package com.grayquest.myapplication;
 
 import android.content.Context;
 import android.util.Log;
